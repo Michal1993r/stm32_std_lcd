@@ -222,15 +222,15 @@ void Convert_Pos(void)
 		Pen_Point.Y0=320;
 		}
 
-	Draw_Full_Rect(43, 295 ,61 ,205 , LCD_BLACK);
-	Draw_Full_Rect(63, 295 ,81 ,205 , LCD_BLACK);
-	Set_Font(&Font16x24);
+	LCD_Draw_Full_Rect(43, 295 ,61 ,205 , LCD_BLACK);
+	LCD_Draw_Full_Rect(63, 295 ,81 ,205 , LCD_BLACK);
+	LCD_Set_Font(&Font16x24);
 	uint16tostr(NMB, Pen_Point.X0, 10);
-	Display_String(43, 295, NMB, LCD_WHITE);
+	LCD_Display_String(43, 295, NMB, LCD_WHITE);
 	uint16tostr(NMB, Pen_Point.Y0, 10);
-	Display_String(63, 295, NMB, LCD_WHITE);
+	LCD_Display_String(63, 295, NMB, LCD_WHITE);
 	//Draw_Pixel((240-Pen_Point.X0), Pen_Point.Y0, LCD_WHITE);
-	Draw_Line((240-Pen_Point.X0),Pen_Point.Y0,(240-LastX),LastY,LCD_WHITE);
+	LCD_Draw_Line((240-Pen_Point.X0),Pen_Point.Y0,(240-LastX),LastY,LCD_WHITE);
 	LastX = Pen_Point.X0;
 	LastY = Pen_Point.Y0;
 	TIM4->CCR1 = (320-Pen_Point.Y0) * 1.5;

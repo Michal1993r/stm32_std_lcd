@@ -16,11 +16,11 @@ RM := rm -rf
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
-ifneq ($(strip $(S_UPPER_DEPS)),)
--include $(S_UPPER_DEPS)
-endif
 ifneq ($(strip $(C_DEPS)),)
 -include $(C_DEPS)
+endif
+ifneq ($(strip $(S_UPPER_DEPS)),)
+-include $(S_UPPER_DEPS)
 endif
 endif
 
@@ -35,7 +35,7 @@ all: stm32_std_lcd.elf
 stm32_std_lcd.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU GCC Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -T"C:\Users\MiCkl\Dysk Google\Programowanie\stm32_std_lcd\LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -lm -o "stm32_std_lcd.elf" @"objects.list" $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -T"/home/mickl/workspace/stm32_std_lcd/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -lm -o "stm32_std_lcd.elf" @"objects.list" $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build

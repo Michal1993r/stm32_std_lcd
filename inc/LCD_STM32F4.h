@@ -66,10 +66,6 @@
 #include "stm32f4xx_it.h"
 #include "fonts.h"
 
-/* Header files with pictures as integer arrays in RGB565 format */
-#include "img/img03.h"
-#include "img/img04.h"
-
 
 /* Type Definitions **********************************************************/
 
@@ -108,23 +104,27 @@ typedef struct
 
 /* Function Prototypes *******************************************************/
 
-void Clear_Screen(uint16_t color);
-void Set_Cursor(uint16_t x, uint16_t y);
-void Draw_Pixel(uint16_t x, uint16_t y, uint16_t color);
-void Draw_Line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
-void Draw_Rect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
-void Draw_Full_Rect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
-void Draw_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color);
-void Draw_Full_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color);
-void Draw_Char(uint16_t x, uint16_t y, const uint16_t *c, uint16_t color);
-void Display_Char(uint16_t x, uint16_t y, uint8_t c, uint16_t color);
-void Display_String(uint16_t x, uint16_t y, char *ptr, uint16_t color);
-void Set_Font(sFONT *fonts);
-void Draw_Image(uint16_t x, uint16_t y, uint16_t x_res, uint16_t y_res,const uint16_t *ptr_image);
-void Init_LCD(void);
-void Write_Command(uint16_t reg, uint16_t data);
-void Write_GDDRAM_Prepare(void);
-void Write_Data(uint16_t data);
+void LCD_Clear_Screen(uint16_t color);
+void LCD_Set_Cursor(uint16_t x, uint16_t y);
+void LCD_Draw_Pixel(uint16_t x, uint16_t y, uint16_t color);
+void LCD_Draw_Line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+void LCD_Draw_Rect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+void LCD_Draw_Full_Rect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+void LCD_Draw_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color);
+void LCD_Draw_Full_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color);
+void LCD_Draw_Char(uint16_t x, uint16_t y, const uint16_t *c, uint16_t color);
+void LCD_Display_Char(uint16_t x, uint16_t y, uint8_t c, uint16_t color);
+void LCD_Display_String(uint16_t x, uint16_t y, char *ptr, uint16_t color);
+void LCD_Set_Font(sFONT *fonts);
+void LCD_Draw_Image(uint16_t x, uint16_t y, uint16_t x_res, uint16_t y_res,const uint16_t *ptr_image);
+void LCD_Init(void);
+void LCD_Write_Command(uint16_t reg, uint16_t data);
+void LCD_Write_GDDRAM_Prepare(void);
+void LCD_Write_Data(uint16_t data);
+
+void LCD_Draw_ProgressBar(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2,
+		uint8_t percentage, uint16_t background_color);
+
 void Init_GPIO(void);
 void Init_FSMC(void);
 void Init_SysTick(void);

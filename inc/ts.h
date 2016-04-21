@@ -92,7 +92,6 @@ void Drow_Touch_Point(uint16_t x,uint16_t y);
 void Draw_Big_Point(uint16_t x,uint16_t y);
 void Convert_Pos(void);
 void Touch_Adjust(void);
-void Convert_Pos(void);
 
 #define Key_Down 0x01
 #define Key_Up   0x00 

@@ -10,7 +10,7 @@
 **  Environment : Atollic TrueSTUDIO(R)
 **                STMicroelectronics STM32F4xx Standard Peripherals Library
 **
-**  Distribution: The file is distributed “as is,” without any warranty
+**  Distribution: The file is distributed ï¿½as is,ï¿½ without any warranty
 **                of any kind.
 **
 **  (c)Copyright Atollic AB.
@@ -29,7 +29,6 @@
 
 #include "stm32f4xx_exti.h"
 #include "stm32f4xx_it.h"
-#include "main.h"
 
 /* Private typedef -----------------------------------------------------------*/
 

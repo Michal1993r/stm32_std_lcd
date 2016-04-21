@@ -20,17 +20,17 @@ static __IO uint32_t TimingDelay;
  * Clear the screen.
  */
 
-void Clear_Screen(uint16_t color)
+void LCD_Clear_Screen(uint16_t color)
 {
   __IO uint32_t i = 0;
 
-  Set_Cursor(0, 0);
+  LCD_Set_Cursor(0, 0);
 
   i = 0x12C00;
-  Write_GDDRAM_Prepare();
+  LCD_Write_GDDRAM_Prepare();
   while(i--)
   {
-    Write_Data(color);
+    LCD_Write_Data(color);
   }
 }
 
@@ -38,28 +38,28 @@ void Clear_Screen(uint16_t color)
  * Set Cursor to Position [x, y].
  */
 
-void Set_Cursor(uint16_t x, uint16_t y)
+void LCD_Set_Cursor(uint16_t x, uint16_t y)
 {
-  Write_Command(0x004E, x);
-  Write_Command(0x004F, y);
+  LCD_Write_Command(0x004E, x);
+  LCD_Write_Command(0x004F, y);
 }
 
 /*
  * Draw a Single Pixel on Position [x, y].
  */
 
-void Draw_Pixel(uint16_t x, uint16_t y, uint16_t color)
+void LCD_Draw_Pixel(uint16_t x, uint16_t y, uint16_t color)
 {
-  Set_Cursor(x, y);
-  Write_GDDRAM_Prepare();
-  Write_Data(color);
+  LCD_Set_Cursor(x, y);
+  LCD_Write_GDDRAM_Prepare();
+  LCD_Write_Data(color);
 }
 
 /*
  * Draw a line in the requested color.
  */
 
-void Draw_Line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color)
+void LCD_Draw_Line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color)
 {
   uint8_t yLonger = 0;
   int incrementVal, endVal;
@@ -93,12 +93,12 @@ void Draw_Line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colo
 
   if(yLonger) {
     for(i = 0;i != endVal;i += incrementVal) {
-      Draw_Pixel(x1 + (j >> 16),y1 + i,color);
+      LCD_Draw_Pixel(x1 + (j >> 16),y1 + i,color);
       j += decInc;
     }
   } else {
     for(i = 0;i != endVal;i += incrementVal) {
-      Draw_Pixel(x1 + i,y1 + (j >> 16),color);
+      LCD_Draw_Pixel(x1 + i,y1 + (j >> 16),color);
       j += decInc;
     }
   }
@@ -111,12 +111,12 @@ void Draw_Line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colo
  * color - color of the rectangle.
  */
 
-void Draw_Rect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color)
+void LCD_Draw_Rect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color)
 {
-  Draw_Line(x1, y1, x2, y1, color);
-  Draw_Line(x2, y1, x2, y2, color);
-  Draw_Line(x2, y2, x1, y2, color);
-  Draw_Line(x1, y2, x1, y1, color);
+  LCD_Draw_Line(x1, y1, x2, y1, color);
+  LCD_Draw_Line(x2, y1, x2, y2, color);
+  LCD_Draw_Line(x2, y2, x1, y2, color);
+  LCD_Draw_Line(x1, y2, x1, y1, color);
 }
 
 /*
@@ -126,12 +126,18 @@ void Draw_Rect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t colo
  * color - color of the rectangle.
  */
 
-void Draw_Full_Rect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color)
+void LCD_Draw_Full_Rect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color)
 {
   while(x1 < x2)
   {
-    Draw_Line(x1, y1, x1, y2, color);
+    LCD_Draw_Line(x1, y1, x1, y2, color);
     x1++;
+  }
+  while(x1 > x2){
+
+	  LCD_Draw_Line(x2, y2, x2, y1, color);
+	  x2++;
+
   }
 }
 
@@ -142,7 +148,7 @@ void Draw_Full_Rect(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t
  * color - color of the circle.
  */
 
-void Draw_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color)
+void LCD_Draw_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color)
 {
   int32_t  D;       /* Decision Variable */
   uint32_t  CurX;   /* Current X Value */
@@ -155,21 +161,21 @@ void Draw_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color)
   while (CurX <= CurY)
   {
     if (((x+CurX) < 240) && ((y+CurY) < 320))
-      Draw_Pixel(x+CurX, y+CurY, color);
+      LCD_Draw_Pixel(x+CurX, y+CurY, color);
     if (((x+CurX) < 240) && ((y-CurY) >= 0))
-      Draw_Pixel(x+CurX, y-CurY, color);
+      LCD_Draw_Pixel(x+CurX, y-CurY, color);
     if (((x-CurX) >= 0) && ((y+CurY) < 320))
-      Draw_Pixel(x-CurX, y+CurY, color);
+      LCD_Draw_Pixel(x-CurX, y+CurY, color);
     if (((x-CurX) >= 0) && ((y-CurY) >= 0))
-      Draw_Pixel(x-CurX, y-CurY, color);
+      LCD_Draw_Pixel(x-CurX, y-CurY, color);
     if (((x+CurY) < 240) && ((y+CurX) < 320))
-      Draw_Pixel(x+CurY, y+CurX, color);
+      LCD_Draw_Pixel(x+CurY, y+CurX, color);
     if (((x+CurY) < 240) && ((y-CurX) >= 0))
-      Draw_Pixel(x+CurY, y-CurX, color);
+      LCD_Draw_Pixel(x+CurY, y-CurX, color);
     if (((x-CurY) >= 0) && ((y+CurX) < 320))
-      Draw_Pixel(x-CurY, y+CurX, color);
+      LCD_Draw_Pixel(x-CurY, y+CurX, color);
     if (((x-CurY) >= 0) && ((y-CurX) >= 0))
-      Draw_Pixel(x-CurY, y-CurX, color);
+      LCD_Draw_Pixel(x-CurY, y-CurX, color);
 
     if (D < 0)
     {
@@ -191,7 +197,7 @@ void Draw_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color)
  * color - color of the circle.
  */
 
-void Draw_Full_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color)
+void LCD_Draw_Full_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color)
 {
   int32_t  D;       /* Decision Variable */
   uint32_t  CurX;   /* Current X Value */
@@ -205,14 +211,14 @@ void Draw_Full_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color)
   {
     if(CurY > 0)
     {
-      Draw_Line(x-CurX, y+CurY, x-CurX, y-CurY, color);
-      Draw_Line(x+CurX, y+CurY, x+CurX, y-CurY, color);
+      LCD_Draw_Line(x-CurX, y+CurY, x-CurX, y-CurY, color);
+      LCD_Draw_Line(x+CurX, y+CurY, x+CurX, y-CurY, color);
     }
 
     if(CurX > 0)
     {
-      Draw_Line(x-CurY, y+CurX, x-CurY, y-CurX, color);
-      Draw_Line(x+CurY, y+CurX, x+CurY, y-CurX, color);
+      LCD_Draw_Line(x-CurY, y+CurX, x-CurY, y-CurX, color);
+      LCD_Draw_Line(x+CurY, y+CurX, x+CurY, y-CurX, color);
     }
 
     if (D < 0)
@@ -235,7 +241,7 @@ void Draw_Full_Circle(uint16_t x, uint16_t y, uint16_t r, uint16_t color)
  * *c - pointer to character data
  */
 
-void Draw_Char(uint16_t x, uint16_t y, const uint16_t *c, uint16_t color)
+void LCD_Draw_Char(uint16_t x, uint16_t y, const uint16_t *c, uint16_t color)
 {
   uint32_t index = 0, i = 0;
 
@@ -246,7 +252,7 @@ void Draw_Char(uint16_t x, uint16_t y, const uint16_t *c, uint16_t color)
       if( ((((c[index] & ((0x80 << ((Current_Font->Width / 12 ) * 8 ) ) >> i)) == 0x00) && (Current_Font->Width <= 12)) ||
           (((c[index] & (0x1 << i)) == 0x00)&&(Current_Font->Width > 12 )))  == 0x00)
       {
-        Draw_Pixel(x, y-1-i, color);
+        LCD_Draw_Pixel(x, y-1-i, color);
       }
     }
     x++;
@@ -260,10 +266,10 @@ void Draw_Char(uint16_t x, uint16_t y, const uint16_t *c, uint16_t color)
  * color - character's color
  */
 
-void Display_Char(uint16_t x, uint16_t y, uint8_t c, uint16_t color)
+void LCD_Display_Char(uint16_t x, uint16_t y, uint8_t c, uint16_t color)
 {
   c -= 32;
-  Draw_Char(x, y, &Current_Font->table[c * Current_Font->Height], color);
+  LCD_Draw_Char(x, y, &Current_Font->table[c * Current_Font->Height], color);
 }
 
 /*
@@ -273,7 +279,7 @@ void Display_Char(uint16_t x, uint16_t y, uint8_t c, uint16_t color)
  * *ptr - pointer to string.
  */
 
-void Display_String(uint16_t x, uint16_t y, char *ptr,uint16_t color)
+void LCD_Display_String(uint16_t x, uint16_t y, char *ptr,uint16_t color)
 {
   uint16_t refcolumn = y;
 
@@ -281,7 +287,7 @@ void Display_String(uint16_t x, uint16_t y, char *ptr,uint16_t color)
   while ((*ptr != 0) & (((refcolumn + 1) & 0xFFFF) >= Current_Font->Width))
   {
     /* Display one character on LCD */
-    Display_Char(x, refcolumn, *ptr, color);
+    LCD_Display_Char(x, refcolumn, *ptr, color);
     /* Decrement the column position by 16 */
     refcolumn -= Current_Font->Width;
     /* Point on the next character */
@@ -293,7 +299,7 @@ void Display_String(uint16_t x, uint16_t y, char *ptr,uint16_t color)
  * Sets the text font.
  */
 
-void Set_Font(sFONT *fonts)
+void LCD_Set_Font(sFONT *fonts)
 {
   Current_Font = fonts;
 }
@@ -305,18 +311,18 @@ void Set_Font(sFONT *fonts)
  * *ptr_image - pointer to image array.
  */
 
-void Draw_Image(uint16_t x, uint16_t y, uint16_t x_res, uint16_t y_res,const uint16_t *ptr_image)
+void LCD_Draw_Image(uint16_t x, uint16_t y, uint16_t x_res, uint16_t y_res,const uint16_t *ptr_image)
 {
   uint16_t i = 0, j = 0;
 
   for(i = 0; i < x_res; i++)
   {
-    Set_Cursor((x+i), y);
-    Write_GDDRAM_Prepare();
+    LCD_Set_Cursor((x+i), y);
+    LCD_Write_GDDRAM_Prepare();
 
     for(j = 0; j < y_res; j++)
     {
-      Write_Data(*(ptr_image++));
+      LCD_Write_Data(*(ptr_image++));
     }
   }
 }
@@ -325,8 +331,12 @@ void Draw_Image(uint16_t x, uint16_t y, uint16_t x_res, uint16_t y_res,const uin
  * Reset and Initialize Display.
  */
 
-void Init_LCD(void)
+void LCD_Init(void)
 {
+
+	Init_GPIO();
+	Init_FSMC();
+	Init_SysTick();
   /* Reset */
 
   GPIO_ResetBits(GPIOC, GPIO_Pin_13);
@@ -336,12 +346,12 @@ void Init_LCD(void)
 
   /* Display ON Sequence (data sheet page 72) */
 
-  Write_Command(0x0007, 0x0021);
-  Write_Command(0x0000, 0x0001);
-  Write_Command(0x0007, 0x0023);
-  Write_Command(0x0010, 0x0000);  /* Exit Sleep Mode */
+  LCD_Write_Command(0x0007, 0x0021);
+  LCD_Write_Command(0x0000, 0x0001);
+  LCD_Write_Command(0x0007, 0x0023);
+  LCD_Write_Command(0x0010, 0x0000);  /* Exit Sleep Mode */
   Delay_ms(30);
-  Write_Command(0x0007, 0x0033);
+  LCD_Write_Command(0x0007, 0x0033);
 
   /*
    * Entry Mode R11h = 6018h
@@ -350,8 +360,8 @@ void Init_LCD(void)
    * ID0 = 1, AM = 1    => the way of automatic incrementing
    *                       of address counter in RAM
    */
-  Write_Command(0x0011, 0x6018);
-  Write_Command(0x0002, 0x0600);  /* AC Settings */
+  LCD_Write_Command(0x0011, 0x6018);
+  LCD_Write_Command(0x0002, 0x0600);  /* AC Settings */
 
   /* Initialize other Registers */
 
@@ -363,14 +373,14 @@ void Init_LCD(void)
    * TB  = 1            => sets gate output sequence (see datasheet page 29)
    * MUX[8, 5:0]        => specify number of lines for the LCD driver
    */
-  Write_Command(0x0001, 0x2B3F);
+  LCD_Write_Command(0x0001, 0x2B3F);
 }
 
 /*
  * Write to LCD RAM.
  */
 
-void Write_Command(uint16_t reg, uint16_t data)
+void LCD_Write_Command(uint16_t reg, uint16_t data)
 {
   LCD->Register = reg;
   LCD->Data = data;
@@ -381,17 +391,17 @@ void Write_Command(uint16_t reg, uint16_t data)
  * Next coming data are directly displayed.
  */
 
-void Write_GDDRAM_Prepare(void)
+void LCD_Write_GDDRAM_Prepare(void)
 {
   LCD->Register = GDDRAM_PREPARE;
 }
 
 /*
  * Writes data to last selected register.
- * Used with function Write_GDDRAM_Prepare().
+ * Used with function LCD_Write_GDDRAM_Prepare().
  */
 
-void Write_Data(uint16_t data)
+void LCD_Write_Data(uint16_t data)
 {
   LCD->Data = data;
 }
@@ -402,6 +412,31 @@ void Write_Data(uint16_t data)
  * RS will be on A16.
  */
 
+
+void LCD_Draw_ProgressBar(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2,
+		uint8_t percentage, uint16_t background_color)
+{
+	uint16_t a, color;
+
+	if (percentage < 30) color = LCD_GREY;
+	else if (percentage >= 30 && percentage < 70) color = LCD_GREEN;
+	else if (percentage >= 70 && percentage < 80) color = LCD_YELLOW;
+	else if (percentage >= 80) color = LCD_RED;
+
+	LCD_Draw_Full_Rect(x1, y1, x2, y2, background_color);
+
+	if (y1 > y2){
+		a = y1 - (((y1 - y2)*percentage)/100);
+
+	}else if( y1 < y2){
+
+		a = y2 - (((y2 - y1)*percentage)/100);
+
+	}
+
+	LCD_Draw_Full_Rect(x1, y1, x2, a, color);
+
+}
 void Init_GPIO(void)
 {
   GPIO_InitTypeDef init={0};

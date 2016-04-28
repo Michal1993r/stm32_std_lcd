@@ -33,6 +33,7 @@
 /* Private typedef -----------------------------------------------------------*/
 
 char Prescaler = 200;
+volatile uint8_t Touched = 0;
 
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -175,8 +176,7 @@ void EXTI15_10_IRQHandler(void)
   if(EXTI_GetITStatus(EXTI_Line12) != RESET)
   {
     /* Toggle LED4 */
-	  GPIO_ToggleBits(GPIOD, GPIO_Pin_13);
-	  //Convert_Pos();
+	  Touched = 1;
 
     /* Clear the EXTI line 0 pending bit */
     EXTI_ClearITPendingBit(EXTI_Line12);

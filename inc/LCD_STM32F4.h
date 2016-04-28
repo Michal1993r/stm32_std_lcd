@@ -65,6 +65,7 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
 #include "fonts.h"
+#include "utilities.h"
 
 
 /* Type Definitions **********************************************************/

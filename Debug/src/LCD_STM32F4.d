@@ -16,7 +16,8 @@ src/LCD_STM32F4.o: ../src/LCD_STM32F4.c \
  /home/mickl/workspace/stm32_std_lcd/StdPeriph_Driver/inc/stm32f4xx_tim.h \
  /home/mickl/workspace/stm32_std_lcd/StdPeriph_Driver/inc/misc.h \
  /home/mickl/workspace/stm32_std_lcd/inc/stm32f4xx_it.h \
- /home/mickl/workspace/stm32_std_lcd/inc/fonts.h
+ /home/mickl/workspace/stm32_std_lcd/inc/fonts.h \
+ /home/mickl/workspace/stm32_std_lcd/inc/utilities.h
 
 /home/mickl/workspace/stm32_std_lcd/inc/LCD_STM32F4.h:
 
@@ -53,3 +54,5 @@ src/LCD_STM32F4.o: ../src/LCD_STM32F4.c \
 /home/mickl/workspace/stm32_std_lcd/inc/stm32f4xx_it.h:
 
 /home/mickl/workspace/stm32_std_lcd/inc/fonts.h:
+
+/home/mickl/workspace/stm32_std_lcd/inc/utilities.h:

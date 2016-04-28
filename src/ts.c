@@ -45,7 +45,7 @@ u16 TPReadX(void)
 {
 	u16 y=0;
 	sFLASH_CS_LOW();
-	SPI_Delay(50);
+	SPI_Delay(5);
 	SPI_RW_Byte(0x90);
 	SPI_Delay(50);
 	y=SPI_RW_Byte(0x00);
@@ -196,8 +196,8 @@ u8 Read_Ads7846(void)
 							}
 					}while(t1);
 		 	 		  
-					Pen_Point.X=((databuffer[0][3]+databuffer[0][4]+databuffer[0][5])/3);
-					Pen_Point.Y=2047-((databuffer[1][3]+databuffer[1][4]+databuffer[1][5])/3);
+					Pen_Point.Y=((databuffer[0][3]+databuffer[0][4]+databuffer[0][5])/3/6.125);
+					Pen_Point.X=240 - (2047-((databuffer[1][3]+databuffer[1][4]+databuffer[1][5])/3))/8.167;
 					flag=1;
 					return 1;
 		}

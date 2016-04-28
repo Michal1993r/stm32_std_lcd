@@ -1,4 +1,4 @@
-src/main.o: ../src/main.c /home/mickl/workspace/stm32_std_lcd/inc/pwm.h \
+src/main.o: ../src/main.c \
  /home/mickl/workspace/stm32_std_lcd/CMSIS/device/stm32f4xx.h \
  /home/mickl/workspace/stm32_std_lcd/CMSIS/core/core_cm4.h \
  /home/mickl/workspace/stm32_std_lcd/CMSIS/core/core_cmInstr.h \
@@ -14,16 +14,17 @@ src/main.o: ../src/main.c /home/mickl/workspace/stm32_std_lcd/inc/pwm.h \
  /home/mickl/workspace/stm32_std_lcd/StdPeriph_Driver/inc/stm32f4xx_syscfg.h \
  /home/mickl/workspace/stm32_std_lcd/StdPeriph_Driver/inc/stm32f4xx_tim.h \
  /home/mickl/workspace/stm32_std_lcd/StdPeriph_Driver/inc/misc.h \
+ /home/mickl/workspace/stm32_std_lcd/inc/stm32f4xx_it.h \
  /home/mickl/workspace/stm32_std_lcd/inc/ts.h \
  /home/mickl/workspace/stm32_std_lcd/inc/stm32f4xx_it.h \
- /home/mickl/workspace/stm32_std_lcd/inc/functions.h \
+ /home/mickl/workspace/stm32_std_lcd/inc/utilities.h \
  /home/mickl/workspace/stm32_std_lcd/inc/LCD_STM32F4.h \
  /home/mickl/workspace/stm32_std_lcd/inc/fonts.h \
- /home/mickl/workspace/stm32_std_lcd/inc/stm32f4xx_it.h \
  /home/mickl/workspace/stm32_std_lcd/inc/LCD_STM32F4.h \
- /home/mickl/workspace/stm32_std_lcd/inc/functions.h
-
-/home/mickl/workspace/stm32_std_lcd/inc/pwm.h:
+ /home/mickl/workspace/stm32_std_lcd/inc/menu.h \
+ /home/mickl/workspace/stm32_std_lcd/inc/ts.h \
+ /home/mickl/workspace/stm32_std_lcd/inc/utilities.h \
+ /home/mickl/workspace/stm32_std_lcd/inc/img/img00.h
 
 /home/mickl/workspace/stm32_std_lcd/CMSIS/device/stm32f4xx.h:
 
@@ -55,18 +56,24 @@ src/main.o: ../src/main.c /home/mickl/workspace/stm32_std_lcd/inc/pwm.h \
 
 /home/mickl/workspace/stm32_std_lcd/StdPeriph_Driver/inc/misc.h:
 
+/home/mickl/workspace/stm32_std_lcd/inc/stm32f4xx_it.h:
+
 /home/mickl/workspace/stm32_std_lcd/inc/ts.h:
 
 /home/mickl/workspace/stm32_std_lcd/inc/stm32f4xx_it.h:
 
-/home/mickl/workspace/stm32_std_lcd/inc/functions.h:
+/home/mickl/workspace/stm32_std_lcd/inc/utilities.h:
 
 /home/mickl/workspace/stm32_std_lcd/inc/LCD_STM32F4.h:
 
 /home/mickl/workspace/stm32_std_lcd/inc/fonts.h:
 
-/home/mickl/workspace/stm32_std_lcd/inc/stm32f4xx_it.h:
-
 /home/mickl/workspace/stm32_std_lcd/inc/LCD_STM32F4.h:
 
-/home/mickl/workspace/stm32_std_lcd/inc/functions.h:
+/home/mickl/workspace/stm32_std_lcd/inc/menu.h:
+
+/home/mickl/workspace/stm32_std_lcd/inc/ts.h:
+
+/home/mickl/workspace/stm32_std_lcd/inc/utilities.h:
+
+/home/mickl/workspace/stm32_std_lcd/inc/img/img00.h:

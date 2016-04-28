@@ -10,8 +10,8 @@
 #include "stm32f4xx_it.h"
 #include "stm32f4xx_spi.h"
 #include "stm32f4xx_exti.h"
-#include "functions.h"
 #include "math.h"
+#include "utilities.h"
 #include "LCD_STM32F4.h"
 
 typedef struct 
@@ -84,14 +84,8 @@ u16 TPReadY(void);
 u16 read_once(void);	
 u8 Read_Ads7846(void); 
 
-void EXTI9_5_IRQHandler(void);
-void NVIC_TOUCHConfiguration(void);
 void touch_init(void);				  
-void LCD_ShowNum(uint8_t x,uint16_t y,uint16_t data);
-void Drow_Touch_Point(uint16_t x,uint16_t y);
-void Draw_Big_Point(uint16_t x,uint16_t y);
 void Convert_Pos(void);
-void Touch_Adjust(void);
 
 #define Key_Down 0x01
 #define Key_Up   0x00 

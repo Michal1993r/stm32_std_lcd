@@ -5,36 +5,39 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../src/LCD_STM32F4.c \
+../src/dcmi.c \
 ../src/fonts.c \
-../src/functions.c \
 ../src/main.c \
-../src/pwm.c \
+../src/menu.c \
 ../src/stm32f4xx_it.c \
 ../src/syscalls.c \
 ../src/system_stm32f4xx.c \
-../src/ts.c 
+../src/ts.c \
+../src/utilities.c 
 
 OBJS += \
 ./src/LCD_STM32F4.o \
+./src/dcmi.o \
 ./src/fonts.o \
-./src/functions.o \
 ./src/main.o \
-./src/pwm.o \
+./src/menu.o \
 ./src/stm32f4xx_it.o \
 ./src/syscalls.o \
 ./src/system_stm32f4xx.o \
-./src/ts.o 
+./src/ts.o \
+./src/utilities.o 
 
 C_DEPS += \
 ./src/LCD_STM32F4.d \
+./src/dcmi.d \
 ./src/fonts.d \
-./src/functions.d \
 ./src/main.d \
-./src/pwm.d \
+./src/menu.d \
 ./src/stm32f4xx_it.d \
 ./src/syscalls.d \
 ./src/system_stm32f4xx.d \
-./src/ts.d 
+./src/ts.d \
+./src/utilities.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

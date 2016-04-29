@@ -65,6 +65,7 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
 #include "fonts.h"
+#include "utilities.h"
 
 
 /* Type Definitions **********************************************************/
@@ -99,7 +100,6 @@ typedef struct
 #define LCD_GREY            0xF7DE
 #define LCD_ORANGE          0xFA20
 #define LCD_YELLOW          0xFFE0
-
 
 
 /* Function Prototypes *******************************************************/

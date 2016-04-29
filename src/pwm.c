@@ -1,16 +1,17 @@
-/*
- * utilities.c
- *
- *  Created on: 25 kwi 2016
- *      Author: root
- */
+/**
+  * @brief  Configure the TIM4 Ouput Channels.
+  * @param  None
+  * @retval None
+  */
+
 #include "stm32f4xx_tim.h"
-#include "stm32f4xx_adc.h"
-#include "utilities.h"
+#include "pwm.h"
 
 uint16_t PrescalerValue = 0;
 
-void PWM_TIM4_init(void)
+void pwm_init(void);
+
+void pwm_init(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
   TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
@@ -22,17 +23,17 @@ void PWM_TIM4_init(void)
   /* GPIOD clock enable */
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 
-  /* GPIOD Configuration: TIM4 CH1 (PD12) and TIM4 CH2 (PD13) */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_12; // | GPIO_Pin_13 ;
+  /* GPIOD Configuration: TIM3 CH1 (PD12) and TIM3 CH2 (PD13) */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12; // | GPIO_Pin_13 ;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP ;
   GPIO_Init(GPIOD, &GPIO_InitStructure);
 
-  /* Connect TIM4 pins to AF2 */
+  /* Connect TIM3 pins to AF2 */
   GPIO_PinAFConfig(GPIOD, GPIO_PinSource12, GPIO_AF_TIM4);
-  GPIO_PinAFConfig(GPIOD, GPIO_PinSource13, GPIO_AF_TIM4);
+  //GPIO_PinAFConfig(GPIOD, GPIO_PinSource13, GPIO_AF_TIM4);
 
   // Pin 13 ... LED
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13; // | GPIO_Pin_13 ;
@@ -63,59 +64,15 @@ void PWM_TIM4_init(void)
   TIM_OC1PreloadConfig(TIM4, TIM_OCPreload_Enable);
 
   /* PWM1 Mode configuration: Channel2 */
-  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+  /*TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
   TIM_OCInitStructure.TIM_Pulse = 0;
 
   TIM_OC2Init(TIM4, &TIM_OCInitStructure);
 
-  TIM_OC2PreloadConfig(TIM4, TIM_OCPreload_Enable);
+  TIM_OC2PreloadConfig(TIM4, TIM_OCPreload_Enable);*/
 
   TIM_ARRPreloadConfig(TIM4, ENABLE);
 
   /* TIM4 enable counter */
   TIM_Cmd(TIM4, ENABLE);
-}
-
-void uint16tostr(char buf[], uint32_t d, uint8_t base)
-{
-    uint32_t div = 1;
-    uint8_t index = 0;
-    while (d/div >= base) div *= base;
-    while (div != 0)
-    {
-            uint32_t num = d/div;
-            d = d%div;
-            div /= base;
-            if (num > 9)
-                    buf[index] = (num-10) + 65;
-            else
-                    buf[index] = num + 48;
-            index++;
-    }
-    buf[index] = 0;	// end of string
-}
-
-void ADC_init(){
-
-	GPIO_InitTypeDef gpio;
-	ADC_InitTypeDef adc;
-
-	gpio.GPIO_Pin = 0;
-	gpio.GPIO_Mode = GPIO_Mode_AF;
-	gpio.GPIO_OType = GPIO_OType_OD;
-	gpio.GPIO_PuPd = GPIO_PuPd_DOWN;
-	GPIO_Init(GPIOA, &gpio);
-
-	adc.ADC_ContinuousConvMode = ENABLE;
-	//adc.ADC_DataAlign =0 ;
-	adc.ADC_NbrOfConversion = 2;
-	adc.ADC_Resolution = ADC_Resolution_8b;
-	ADC_Init(ADC1, &adc);
-
-}
-
-int ADC_Read(){
-
-
-
 }

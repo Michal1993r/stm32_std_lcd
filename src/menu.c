@@ -62,7 +62,7 @@ void MENU_TempIn(Menu* m, char* c){
 
 void Menu_TempOut(Menu* menu, char* c){
 
-
+	LCD_Draw_Full_Rect(27, 309, 47, 180, menu->frame_color );
 	LCD_Draw_Circle(32, 208, 3, menu->Text_color);
 	LCD_Display_String(28, 300, c, menu->Text_color);
 	LCD_Display_String(28, 203, "C", menu->Text_color);

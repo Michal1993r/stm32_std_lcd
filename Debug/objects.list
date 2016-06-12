@@ -31,6 +31,7 @@
 "StdPeriph_Driver/src/stm32f4xx_wwdg.o"
 "Utilities/stm32f4_discovery.o"
 "Utilities/stm32f4_discovery_lis302dl.o"
+"src/DS1B20.o"
 "src/LCD_STM32F4.o"
 "src/dcmi.o"
 "src/fonts.o"

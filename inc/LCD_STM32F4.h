@@ -127,9 +127,6 @@ void LCD_Draw_ProgressBar(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2,
 
 void Init_GPIO(void);
 void Init_FSMC(void);
-void Init_SysTick(void);
-void Delay_ms(__IO uint32_t nTime);
-void TimingDelay_Decrement(void);
 int abs(int);
 
 #endif /* LCD_STM32F4_H_ */

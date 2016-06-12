@@ -12,7 +12,6 @@
 /* Private Variables *********************************************************/
 
 static sFONT *Current_Font;
-static __IO uint32_t TimingDelay;
 
 /* Functions *****************************************************************/
 
@@ -336,7 +335,6 @@ void LCD_Init(void)
 
 	Init_GPIO();
 	Init_FSMC();
-	Init_SysTick();
   /* Reset */
 
   GPIO_ResetBits(GPIOC, GPIO_Pin_13);
@@ -507,8 +505,8 @@ void Init_FSMC(void)
 
   RCC_AHB3PeriphClockCmd(RCC_AHB3Periph_FSMC,ENABLE);
 
-  timing.FSMC_AddressSetupTime=0x00;
-  timing.FSMC_DataSetupTime=0x0A;
+  timing.FSMC_AddressSetupTime=0x01;
+  timing.FSMC_DataSetupTime=0x05;
   timing.FSMC_CLKDivision=0x0;
   timing.FSMC_AccessMode=FSMC_AccessMode_A;
 
@@ -541,40 +539,3 @@ void Init_FSMC(void)
   FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM1,ENABLE);
 }
 
-/*
- * Initialize SysTick to 1 ms.
- */
-
-void Init_SysTick(void)
-{
-  RCC_ClocksTypeDef RCC_Clocks;
-
-  RCC_GetClocksFreq(&RCC_Clocks);
-  SysTick_Config(RCC_Clocks.HCLK_Frequency / 1000);
-}
-
-/*
- * Inserts a delay time.
- */
-
-void Delay_ms(__IO uint32_t nTime)
-{
-  TimingDelay = nTime;
-
-  while(TimingDelay != 0)
-  {
-  }
-}
-
-/*
- * Decrements the TimingDelay variable.
- * Called from interrupt.
- */
-
-void TimingDelay_Decrement(void)
-{
-  if (TimingDelay != 0x00)
-  {
-    TimingDelay--;
-  }
-}

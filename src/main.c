@@ -9,72 +9,131 @@
 #include "LCD_STM32F4.h"
 #include "menu.h"
 #include "utilities.h"
+#include "DS18B20.h"
 
-TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-TIM_OCInitTypeDef  TIM_OCInitStructure;
+void peltier_init();
+void heat_up();
+void cool_down();
+void heater_fan();
+void cooler_fan();
+
 Menu menu;
-uint16_t CCR1_Val = 255;	//LCD Brightness
-extern uint8_t Touched;		//Touch panel flag
-extern uint8_t refresh;
+uint16_t CCR1_Val = 255;	//LCD Brightness 0 - 255
+sDS18B20 sensors[SENSNUMBER];
+
+uint16_t temp_i, temp_o, percent;
+int8_t temp_d = 24;
 
 int main (void)
 {
   /* Initialization */
 
 	SystemInit();
+	Init_SysTick();
 
 	LCD_Init();
-	PWM_TIM4_init();
+	PWM_TIM4_init(ENABLE, ENABLE, ENABLE, ENABLE);
 	touch_init();
 	ADC_init();
+	peltier_init();
+	DS18B20_init(sensors);
+	UART_init();
 
-	uint16_t temp_i, temp_o;
-	int8_t temp_d = 24;
-
-	char buff[10];
+	char buff[32];
+	double_t temp;
 
 	menu.Text_color = LCD_WHITE;
 	menu.Tooltip_color = LCD_RED;
 	menu.frame_color = LCD_RED;
 	menu.Progress_bar_bckground_color = LCD_BLACK;
 
-  TIM4->CCR1 = CCR1_Val;
+	TIM4->CCR1 = CCR1_Val;
 
 
-  LCD_Clear_Screen(LCD_BLUE);
-  Menu_create(&menu);
-
-  //DMA_InitTypeDef dma;
+	LCD_Clear_Screen(LCD_BLUE);
+	Menu_create(&menu);
 
   while(1)
   {
+	  temp = (double_t)(ADC_Read()/255)*100;
+	  percent = (uint16_t)temp;
+	  Menu_FanSpeed(&menu, percent);
+	  UART_Puts(itoa(percent, buff, 10));
 
-	  if(Touched){
+	  DS18B20_onetemp(sensors, 0, 9);
+	  DS18B20_onetemp(sensors, 1, 9);
+	  temp_i = sensors[0].temp;
+	  temp_o = sensors[1].temp;
+	  MENU_TempIn(&menu, itoa(temp_i, buff, 10));
+	  Menu_TempOut(&menu, itoa(temp_o, buff, 10));
 
-		  if (Menu_PlusPressed()){
-
-			  temp_d += 1;
-			  Menu_Desiredtemp(&menu, itoa(temp_d, buff, 10));
-			  Touched = 0;
-
-		  }
-		  else if (Menu_MinusPressed()){
-
-			  temp_d -= 1;
-			  Menu_Desiredtemp(&menu, itoa(temp_d, buff, 10));
-			  Touched = 0;
-
-		  }
-	  }
-
-	  TIM4->CCR2 = temp_i;
-	  temp_i = ADC_Read();
-
-	  if (refresh == 1){
-		  MENU_TempIn(&menu, itoa(temp_i, buff, 10));
-		  refresh = 0;
-	  }
   }
 
+
   return 0;
+}
+
+void peltier_init(){
+
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+	GPIO_InitTypeDef gpio;
+
+	gpio.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5;
+	gpio.GPIO_Mode = GPIO_Mode_OUT;
+	gpio.GPIO_OType = GPIO_OType_PP;
+	gpio.GPIO_PuPd = GPIO_PuPd_UP;
+	gpio.GPIO_Speed = GPIO_Speed_25MHz;
+	GPIO_Init(GPIOC, &gpio);
+
+}
+
+void heat_up(){
+
+	GPIO_SetBits(GPIOC, GPIO_Pin_4);
+	GPIO_ResetBits(GPIOC, GPIO_Pin_5);
+
+}
+
+void cool_down(){
+
+	GPIO_SetBits(GPIOC, GPIO_Pin_5);
+	GPIO_ResetBits(GPIOC, GPIO_Pin_4);
+
+}
+
+void heater_fan(){
+
+	TIM4->CCR3 = 125;
+	TIM4->CCR4 = 0;
+
+}
+
+void cooler_fan(){
+
+	TIM4->CCR3 = 125;
+	TIM4->CCR4 = 0;
+
+}
+
+void EXTI15_10_IRQHandler(void)
+{
+  if(EXTI_GetITStatus(EXTI_Line12) != RESET)
+  {
+
+	  if (Menu_PlusPressed()){
+
+		  temp_d += 1;
+		  Menu_Desiredtemp(&menu, itoa(temp_d, buff, 10));
+
+	  }
+	  else if (Menu_MinusPressed()){
+
+		  temp_d -= 1;
+		  Menu_Desiredtemp(&menu, itoa(temp_d, buff, 10));
+
+	  }
+
+    /* Clear the EXTI line 0 pending bit */
+    EXTI_ClearITPendingBit(EXTI_Line12);
+  }
 }

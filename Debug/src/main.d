@@ -23,7 +23,8 @@ src/main.o: ../src/main.c \
  /home/mickl/workspace/stm32_std_lcd/inc/LCD_STM32F4.h \
  /home/mickl/workspace/stm32_std_lcd/inc/menu.h \
  /home/mickl/workspace/stm32_std_lcd/inc/ts.h \
- /home/mickl/workspace/stm32_std_lcd/inc/utilities.h
+ /home/mickl/workspace/stm32_std_lcd/inc/utilities.h \
+ /home/mickl/workspace/stm32_std_lcd/inc/DS18B20.h
 
 /home/mickl/workspace/stm32_std_lcd/CMSIS/device/stm32f4xx.h:
 
@@ -74,3 +75,5 @@ src/main.o: ../src/main.c \
 /home/mickl/workspace/stm32_std_lcd/inc/ts.h:
 
 /home/mickl/workspace/stm32_std_lcd/inc/utilities.h:
+
+/home/mickl/workspace/stm32_std_lcd/inc/DS18B20.h:

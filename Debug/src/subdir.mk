@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../src/DS1B20.c \
 ../src/LCD_STM32F4.c \
 ../src/dcmi.c \
 ../src/fonts.c \
@@ -16,6 +17,7 @@ C_SRCS += \
 ../src/utilities.c 
 
 OBJS += \
+./src/DS1B20.o \
 ./src/LCD_STM32F4.o \
 ./src/dcmi.o \
 ./src/fonts.o \
@@ -28,6 +30,7 @@ OBJS += \
 ./src/utilities.o 
 
 C_DEPS += \
+./src/DS1B20.d \
 ./src/LCD_STM32F4.d \
 ./src/dcmi.d \
 ./src/fonts.d \

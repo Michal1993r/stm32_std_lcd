@@ -29,12 +29,13 @@
 
 #include "stm32f4xx_exti.h"
 #include "stm32f4xx_it.h"
+#include "utilities.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
-#define RefreshRate 200
+#define RefreshRate 200 //refresh rate in ms
 
-volatile int Prescaler = RefreshRate;
+volatile int Prescaler = RefreshRate*1000;
 volatile uint8_t Touched = 0;
 volatile uint8_t refresh = 0;
 
@@ -147,7 +148,7 @@ void SysTick_Handler(void)
 		Prescaler--;
 		if (Prescaler == 0) {
 			refresh = 1;
-			Prescaler = RefreshRate;
+			Prescaler = RefreshRate*1000;
 		}
 
 }
@@ -174,17 +175,7 @@ void SysTick_Handler(void)
   * @retval None
   */
 
-void EXTI15_10_IRQHandler(void)
-{
-  if(EXTI_GetITStatus(EXTI_Line12) != RESET)
-  {
-    /* Toggle LED4 */
-	  Touched = 1;
 
-    /* Clear the EXTI line 0 pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line12);
-  }
-}
 
 /**
   * @}

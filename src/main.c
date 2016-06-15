@@ -42,9 +42,13 @@ int main (void)
 	DS18B20_init(sensors);
 	UART_init();
 
+	// Variables
+
 	char buff[32];
 	uint16_t temp;
+	uint16_t Kp, Ki, Kd, P, I, D, pwm, e = 0, e_old = 0;
 
+	// Create menu
 	menu.Text_color = LCD_WHITE;
 	menu.Tooltip_color = LCD_RED;
 	menu.frame_color = LCD_RED;
@@ -52,12 +56,16 @@ int main (void)
 
 	TIM4->CCR1 = CCR1_Val;
 
-
 	LCD_Clear_Screen(LCD_BLUE);
 	Menu_create(&menu);
 
+	Kp = 1;
+	Ki = 1;
+	Kd = 1;
+
   while(1)
   {
+	  // Temperature measurement
 	  DS18B20_onetemp(sensors, 0, 9);
 	  DS18B20_onetemp(sensors, 1, 9);
 	  temp_i = sensors[0].temp;
@@ -67,14 +75,32 @@ int main (void)
 
 	  //TODO REGULATOR
 
+	  e_old = e;
+	  e = temp_d - temp_i;
+	  P = e*Kp;
+	  I = Ki*(e_old + e);
+	  D = Kd*(e_old - e);
+	  pwm = P + I + D;
+
+	  //TIM4->CCR2 = pwm;
+
+
+	  // uchyb ujemny lub dodatni
+	  if (e > 0) heat_up();
+	  else if (e < 0 ) cool_down();
+
+	  // sterowanie wiatraczkami
 	  if (ModeFlag == AUTO){
 
 		  Menu_FanSpeed(&menu, 50);
+		  if (e > 0) heater_fan();
+		  else if (e < 0 ) cooler_fan();
 
 	  } else if (ModeFlag == MANUAL){
 
 		 temp = (ADC_Read()*100)/255;
 		 percent = (uint16_t)temp;
+		 if (temp > 180) temp = 180;
 		 Menu_FanSpeed(&menu, percent);
 
 	  }

@@ -27,7 +27,7 @@ void Menu_create(Menu* menu){
 		  LCD_Display_String(28, 108, "SPEED", menu->Tooltip_color);
 		  LCD_Draw_ProgressBar(51, 128, 71, 10, 0, menu->Progress_bar_bckground_color);
 		  LCD_Draw_Full_Rect(74, 116, 94, 15, menu->frame_color);
-		  LCD_Display_String(75, 113, "MANUAL", menu->Text_color);
+		  LCD_Display_String(75, 113, "AUTO", menu->Text_color);
 		  //BLOK PROGRAM TEMP
 		  LCD_Display_String(130, 254, "DESIRED TEMP", menu->Tooltip_color);
 		  LCD_Draw_Full_Rect(152, 249, 171, 69, menu->frame_color);
@@ -107,6 +107,22 @@ uint8_t Menu_MinusPressed(){
 	bx = Pen_Point.X;
 	by = Pen_Point.Y;
 	if (((bx >= 181) && (bx <= 231)) && ((by >= 169) && (by <= 289))){
+		//Delay_ms(100);
+		Pen_Point.X = 0;
+		Pen_Point.Y = 0;
+		return 1;
+	}
+	else return 0;
+
+}
+
+uint8_t Menu_AutoPressed(){
+
+	Read_Ads7846();
+	bx = Pen_Point.X;
+	by = Pen_Point.Y;
+	//LCD_Draw_Full_Rect(74, 116, 94, 15, menu->frame_color);
+	if (((bx >= 74) && (bx <= 94)) && ((by >= 15) && (by <= 116))){
 		//Delay_ms(100);
 		Pen_Point.X = 0;
 		Pen_Point.Y = 0;

@@ -3,6 +3,7 @@
  */
 /* Includes *******************************************************************/
 #include <stdlib.h>
+#include <math.h>
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
 #include "ts.h"
@@ -24,6 +25,8 @@ sDS18B20 sensors[SENSNUMBER];
 uint16_t temp_i, temp_o, percent;
 int8_t temp_d = 24;
 
+uint8_t ModeFlag = AUTO;
+
 int main (void)
 {
   /* Initialization */
@@ -40,7 +43,7 @@ int main (void)
 	UART_init();
 
 	char buff[32];
-	double_t temp;
+	uint16_t temp;
 
 	menu.Text_color = LCD_WHITE;
 	menu.Tooltip_color = LCD_RED;
@@ -55,11 +58,6 @@ int main (void)
 
   while(1)
   {
-	  temp = (double_t)(ADC_Read()/255)*100;
-	  percent = (uint16_t)temp;
-	  Menu_FanSpeed(&menu, percent);
-	  UART_Puts(itoa(percent, buff, 10));
-
 	  DS18B20_onetemp(sensors, 0, 9);
 	  DS18B20_onetemp(sensors, 1, 9);
 	  temp_i = sensors[0].temp;
@@ -67,6 +65,19 @@ int main (void)
 	  MENU_TempIn(&menu, itoa(temp_i, buff, 10));
 	  Menu_TempOut(&menu, itoa(temp_o, buff, 10));
 
+	  //TODO REGULATOR
+
+	  if (ModeFlag == AUTO){
+
+		  Menu_FanSpeed(&menu, 50);
+
+	  } else if (ModeFlag == MANUAL){
+
+		 temp = (ADC_Read()*100)/255;
+		 percent = (uint16_t)temp;
+		 Menu_FanSpeed(&menu, percent);
+
+	  }
   }
 
 
@@ -130,6 +141,20 @@ void EXTI15_10_IRQHandler(void)
 
 		  temp_d -= 1;
 		  Menu_Desiredtemp(&menu, itoa(temp_d, buff, 10));
+
+	  }
+	  else if (Menu_AutoPressed()){
+
+		  if (ModeFlag == AUTO){
+
+			  Menu_FanControl(&menu, MANUAL);
+			  ModeFlag = MANUAL;
+
+		  } else if (ModeFlag == MANUAL){
+
+			  Menu_FanControl(&menu, AUTO);
+			  ModeFlag = AUTO;
+		  }
 
 	  }
 

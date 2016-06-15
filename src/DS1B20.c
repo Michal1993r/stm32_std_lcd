@@ -165,31 +165,6 @@ uint8_t DS18B20_temp(sDS18B20 s[])
 		s[i].temp=(float)(temp1+temp2)/16;
 	}
 
-//	uint8_t data[9];
-//	uint16_t temp;
-//	int8_t digits, minus = 0;
-//
-//	if (!ow_bit_read()) return 0;
-//
-//	ow_reset();
-//	ow_byte_wr(0xCC);
-//	ow_byte_wr(0xBE);
-//	for (int i = 0; i < 9; i++) data[i] = ow_byte_rd();
-//	temp = data[0] | (data[1] << 8);
-//
-//	ow_reset();
-//	if (temp & 0x8000){
-//
-//		temp = ~temp +1;
-//		minus = 1;
-//	}
-//
-//		digits = temp >> 4;
-//		digits |= ((temp >> 8) & 0x07) << 4;
-//
-//		s[0].temp = (temp >> 3) & 0x01;
-//		s[0].temp *= 0.5;
-
 	return 1;
 
 }

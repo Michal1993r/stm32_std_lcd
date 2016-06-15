@@ -23,13 +23,14 @@ typedef struct MENU{
 	uint16_t Progress_bar_bckground_color;
 }Menu;
 
-extern void Menu_create(Menu* m);
-extern void Menu_FanSpeed(Menu* m, uint8_t percentage);
-extern void MENU_TempIn(Menu* m, char* c);
-extern void Menu_TempOut(Menu* menu, char* c);
-extern void Menu_Desiredtemp(Menu* menu, char *);
-extern void Menu_FanControl(Menu* menu, int ManualOrAuto);
-extern uint8_t Menu_PlusPressed();
-extern uint8_t Menu_MinusPressed();
+void Menu_create(Menu* m);
+void Menu_FanSpeed(Menu* m, uint8_t percentage);
+void MENU_TempIn(Menu* m, char* c);
+void Menu_TempOut(Menu* menu, char* c);
+void Menu_Desiredtemp(Menu* menu, char *);
+void Menu_FanControl(Menu* menu, int ManualOrAuto);
+uint8_t Menu_PlusPressed();
+uint8_t Menu_MinusPressed();
+uint8_t Menu_AutoPressed();
 
 #endif /* MENU_H_ */

@@ -135,13 +135,13 @@ void DS18B20_init(sDS18B20 s[])
 	s[0].addr[6]=4;
 	s[0].addr[7]=238;
 	s[1].addr[0]=40;
-	s[1].addr[1]=1;
-	s[1].addr[2]=168;
-	s[1].addr[3]=7;
+	s[1].addr[1]=255;
+	s[1].addr[2]=185;
+	s[1].addr[3]=26;
 	s[1].addr[4]=0;
-	s[1].addr[5]=0;
-	s[1].addr[6]=128;
-	s[1].addr[7]=46;
+	s[1].addr[5]=22;
+	s[1].addr[6]=1;
+	s[1].addr[7]=207;
 }
 
 //Funkcja odczytujaca temperature ze wszystkich czujnik�w

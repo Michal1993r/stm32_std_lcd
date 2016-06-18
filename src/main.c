@@ -23,7 +23,7 @@ uint16_t CCR1_Val = 255;	//LCD Brightness 0 - 255
 sDS18B20 sensors[SENSNUMBER];
 
 uint16_t temp_i, temp_o, percent;
-int8_t temp_d = 24;
+uint16_t temp_d = 24;
 
 uint8_t ModeFlag = AUTO;
 
@@ -46,7 +46,15 @@ int main (void)
 
 	char buff[32];
 	uint16_t temp;
-	uint16_t Kp, Ki, Kd, P, I, D, pwm, e = 0, e_old = 0;
+	int16_t 	Kp = 1,
+				Ki = 1,
+				Kd = 1,
+				P = 0,
+				I = 0,
+				D = 0,
+				pwm = 0,
+				e = 0,
+				e_old = 0;
 
 	// Create menu
 	menu.Text_color = LCD_WHITE;
@@ -59,17 +67,16 @@ int main (void)
 	LCD_Clear_Screen(LCD_BLUE);
 	Menu_create(&menu);
 
-	Kp = 1;
-	Ki = 1;
-	Kd = 1;
+	temp_i = 0;
+	temp_o = 0;
 
   while(1)
   {
 	  // Temperature measurement
 	  DS18B20_onetemp(sensors, 0, 9);
 	  DS18B20_onetemp(sensors, 1, 9);
-	  temp_i = sensors[0].temp;
-	  temp_o = sensors[1].temp;
+	  temp_o = sensors[0].temp;
+	  temp_i = sensors[1].temp;
 	  MENU_TempIn(&menu, itoa(temp_i, buff, 10));
 	  Menu_TempOut(&menu, itoa(temp_o, buff, 10));
 
@@ -80,9 +87,13 @@ int main (void)
 	  P = e*Kp;
 	  I = Ki*(e_old + e);
 	  D = Kd*(e_old - e);
-	  pwm = P + I + D;
+	  pwm = (P + I + D)*30;
 
-	  //TIM4->CCR2 = pwm;
+	  if (pwm < 0) pwm = -pwm;
+	  if (pwm > 255) pwm = 255;
+
+	  TIM4->CCR2 = pwm;
+	  UART_Puts(itoa(pwm, buff, 10));
 
 
 	  // uchyb ujemny lub dodatni
@@ -100,8 +111,20 @@ int main (void)
 
 		 temp = (ADC_Read()*100)/255;
 		 percent = (uint16_t)temp;
-		 if (temp > 180) temp = 180;
+		 //if (temp > 180) temp = 180;
 		 Menu_FanSpeed(&menu, percent);
+		 if (e > 0) {
+
+			 TIM4->CCR3 = temp;
+			 TIM4->CCR4 = 0;
+
+		 }
+		 else if (e < 0){
+
+			 TIM4->CCR4 = temp;
+			 TIM4->CCR3 = 0;
+
+		 }
 
 	  }
   }
@@ -140,14 +163,14 @@ void cool_down(){
 
 void heater_fan(){
 
-	TIM4->CCR3 = 125;
+	TIM4->CCR3 = 255;
 	TIM4->CCR4 = 0;
 
 }
 
 void cooler_fan(){
 
-	TIM4->CCR3 = 125;
+	TIM4->CCR3 = 255;
 	TIM4->CCR4 = 0;
 
 }

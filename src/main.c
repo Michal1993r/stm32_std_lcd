@@ -22,8 +22,20 @@ Menu menu;
 uint16_t CCR1_Val = 255;	//LCD Brightness 0 - 255
 sDS18B20 sensors[SENSNUMBER];
 
-uint16_t temp_i, temp_o, percent;
-uint16_t temp_d = 24;
+uint16_t 	temp_i,
+			temp_o,
+			percent,
+			temp_d = 24,
+ 			Kp = 1,
+			Ki = 1,
+			Kd = 1;
+int16_t		P = 0,
+			I = 0,
+			D = 0,
+			pwm = 0,
+			e = 0,
+			e_old = 0,
+			gain = 1;
 
 uint8_t ModeFlag = AUTO;
 
@@ -46,15 +58,6 @@ int main (void)
 
 	char buff[32];
 	uint16_t temp;
-	int16_t 	Kp = 1,
-				Ki = 1,
-				Kd = 1,
-				P = 0,
-				I = 0,
-				D = 0,
-				pwm = 0,
-				e = 0,
-				e_old = 0;
 
 	// Create menu
 	menu.Text_color = LCD_WHITE;
@@ -80,14 +83,12 @@ int main (void)
 	  MENU_TempIn(&menu, itoa(temp_i, buff, 10));
 	  Menu_TempOut(&menu, itoa(temp_o, buff, 10));
 
-	  //TODO REGULATOR
-
 	  e_old = e;
 	  e = temp_d - temp_i;
 	  P = e*Kp;
 	  I = Ki*(e_old + e);
 	  D = Kd*(e_old - e);
-	  pwm = (P + I + D)*30;
+	  pwm = (P + I + D)*gain;
 
 	  if (pwm < 0) pwm = -pwm;
 	  if (pwm > 255) pwm = 255;

@@ -107,8 +107,8 @@ C_DEPS += \
 StdPeriph_Driver/src/%.o: ../StdPeriph_Driver/src/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU GCC Compiler'
-	@echo $(PWD)
-	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F407VGTx -DSTM32F4 -DSTM32F4DISCOVERY -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F40XX -DSTM32F40_41xxx -I"/home/mickl/workspace/stm32_std_lcd/inc" -I"/home/mickl/workspace/stm32_std_lcd/CMSIS/core" -I"/home/mickl/workspace/stm32_std_lcd/CMSIS/device" -I"/home/mickl/workspace/stm32_std_lcd/StdPeriph_Driver/inc" -I"/home/mickl/workspace/stm32_std_lcd/Utilities" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
+	@echo %cd%
+	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F407VGTx -DSTM32F4 -DSTM32F4DISCOVERY -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F40XX -DSTM32F40_41xxx -I"C:/Users/MiCkl/Dysk Google/Programowanie/stm32_std_lcd/inc" -I"C:/Users/MiCkl/Dysk Google/Programowanie/stm32_std_lcd/CMSIS/core" -I"C:/Users/MiCkl/Dysk Google/Programowanie/stm32_std_lcd/CMSIS/device" -I"C:/Users/MiCkl/Dysk Google/Programowanie/stm32_std_lcd/StdPeriph_Driver/inc" -I"C:/Users/MiCkl/Dysk Google/Programowanie/stm32_std_lcd/Utilities" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

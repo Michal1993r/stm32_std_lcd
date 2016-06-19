@@ -20,7 +20,7 @@
 typedef struct
 {
 	char	addr[8];
-	int	temp;
+	int		temp;
 
 }sDS18B20;
 
